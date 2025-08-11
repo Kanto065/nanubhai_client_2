@@ -8,7 +8,22 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function ProductDetailCard({ product }: { product: any }) {
+interface ProductImage {
+  image: string;
+  _id: string;
+}
+
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  previousPrice?: number;
+  description?: string;
+  freeDelivery?: boolean;
+  images: ProductImage[];
+}
+
+export default function ProductDetailCard({ product }: { product: Product }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const router = useRouter();
@@ -72,10 +87,9 @@ export default function ProductDetailCard({ product }: { product: any }) {
 
           {/* Image Slider */}
           <div className="flex justify-center space-x-2">
-            {product?.images?.length > 0 &&
-              product?.images.map((imgVal, index) => (
+            {product?.images?.length > 0 && product?.images.map((imgVal: ProductImage, index: number) => (
                 <button
-                  key={imgVal}
+                  key={imgVal._id}
                   onClick={() => setCurrentImageIndex(index)}
                   className={`w-12 h-12 rounded-full overflow-hidden border-2 transition-all duration-300 ${
                     index === currentImageIndex

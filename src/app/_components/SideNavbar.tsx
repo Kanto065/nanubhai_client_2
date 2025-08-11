@@ -20,6 +20,13 @@ import { useDispatch } from "react-redux";
 import { apiSlice } from "@/redux/features/apiSlice";
 import { logoutAction } from "@/actions/user";
 
+interface NavItem {
+  name: string;
+  icon: React.ReactNode;
+  path: string;
+  onClick?: () => void;
+}
+
 interface SideNavbarProps {
   isOpen: boolean;
   onClose: () => void;
@@ -70,7 +77,7 @@ const SideNavbar: React.FC<SideNavbarProps> = ({ isOpen, onClose }) => {
   // This effect has been removed to allow scrolling while the sidebar is open
 
   // Common navigation items
-  const commonNavItems = [
+  const commonNavItems: NavItem[] = [
     { name: "Home", icon: <Home className="w-5 h-5" />, path: "/" },
     {
       name: "Categories",
@@ -87,7 +94,7 @@ const SideNavbar: React.FC<SideNavbarProps> = ({ isOpen, onClose }) => {
   ];
 
   // Authentication-specific items
-  const authNavItems = user
+  const authNavItems: NavItem[] = user
     ? [
         {
           name: "Logout",

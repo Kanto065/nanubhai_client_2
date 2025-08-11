@@ -38,8 +38,9 @@ export default function LoginForm() {
       if (result.fieldErrors) {
         // Show Zod field errors from action
         for (const key in result.fieldErrors) {
+          const fieldKey = key as keyof typeof result.fieldErrors;
           setError(key as keyof LoginSchemaType, {
-            message: result.fieldErrors[key]?.[0] || "Invalid",
+            message: result.fieldErrors[fieldKey]?.[0] || "Invalid",
           });
         }
       } else if (result.message) {
