@@ -4,12 +4,11 @@ const nextConfig: NextConfig = {
   // eslint: {
   //   ignoreDuringBuilds: true,
   // },
-  serverExternalPackages: ['postcss-import'],
   transpilePackages: [],
-  experimental: {},
-  webpack: (config) => {
-    config.resolve.fallback = { fs: false, path: false };
-    return config;
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['localhost:3000', 'backend.nanuvaierrosonakothon.com', 'nanubhai-server-render.onrender.com'],
+    },
   },
   images: {
     remotePatterns: [
@@ -35,6 +34,10 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
+  },
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false, path: false };
+    return config;
   },
 };
 
