@@ -4,11 +4,9 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  output: 'standalone',
-  experimental: {
-    serverComponentsExternalPackages: ['postcss-import']
-  },
+  serverExternalPackages: ['postcss-import'],
   transpilePackages: [],
+  experimental: {},
   webpack: (config) => {
     config.resolve.fallback = { fs: false, path: false };
     return config;
