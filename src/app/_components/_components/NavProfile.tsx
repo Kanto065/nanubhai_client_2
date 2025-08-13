@@ -4,15 +4,17 @@ import ProfileMenu from "./ProfileMenu";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { ShoppingCart } from "lucide-react";
+import { AppState } from "@/redux/store";
+import { UserType } from "@/types/user";
 
 export default function NavProfile({ cartTotal = 0 }: { cartTotal: number }) {
-  const { user } = useSelector((state: any) => state.auth);
+  const user = useSelector((state: AppState) => state.auth.user) as UserType | undefined;
 
   return (
     <div className="flex items-center space-x-4">
       {user ? (
         <span className="hidden md:block font-medium text-black">
-          Hi, {user?.name}
+          Hi, {user.name}
         </span>
       ) : (
         <div className="hidden md:flex space-x-2">

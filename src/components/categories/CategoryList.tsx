@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getImageUrl } from "@/utils";
+import { CategoryBase } from "@/types/common";
 
 export default async function CategoryGrid() {
   try {
@@ -21,7 +22,7 @@ export default async function CategoryGrid() {
       <Suspense fallback={<Loading />}>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {data?.categories?.length > 0 &&
-            data?.categories?.map((category: any) => (
+            data?.categories?.map((category: CategoryBase) => (
               <Link
                 href={`/categories/${category._id}`}
                 key={category._id}

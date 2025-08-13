@@ -1,22 +1,26 @@
 import React from "react";
 import { getProducts } from "@/services/productApi";
 import ProductCard from "../products/ProductCard";
+import { Product } from "@/types/product";
 
 export default async function CategoryProductList({
-  id,
   categoryName,
+  id,
 }: {
-  id: string;
   categoryName: string;
+  id: string;
 }) {
   let content = null;
   try {
     const resData = await getProducts();
     const { products } = resData;
+    const filteredProducts = products.filter(
+      (product: Product) => product.category === id
+    );
     content = (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 px-2 sm:px-4">
-        {products?.length > 0 &&
-          products?.map((product: any, index: number) => (
+        {filteredProducts?.length > 0 &&
+          filteredProducts?.map((product: Product, index: number) => (
             <ProductCard key={product?._id} product={product} index={index} />
           ))}
       </div>

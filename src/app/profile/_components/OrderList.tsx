@@ -20,7 +20,12 @@ import { Order, OrderStatus } from "@/types/order";
 import { getImageUrl } from "@/utils";
 import dayjs from "dayjs";
 
-export default function OrderList({ orders }: { orders: Order[] }) {
+interface OrderListProps {
+  orders: Order[];
+  onOrderSelect: (orderId: string) => void;
+}
+
+export default function OrderList({ orders, onOrderSelect }: OrderListProps) {
   // State for expanded order details
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,6 +37,7 @@ export default function OrderList({ orders }: { orders: Order[] }) {
       setExpandedOrderId(null);
     } else {
       setExpandedOrderId(orderId);
+      onOrderSelect(orderId);
     }
   };
 

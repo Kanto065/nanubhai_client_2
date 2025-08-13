@@ -4,11 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { getImageUrl } from "@/utils";
 
+import { Product } from "@/types/product";
+
 export default function ProductCard({
   product,
   index,
 }: {
-  product: any;
+  product: Product;
   index: number;
 }) {
   return (
@@ -23,8 +25,8 @@ export default function ProductCard({
         <figure className="relative aspect-square">
           <Image
             src={
-              product?.images?.length > 0
-                ? getImageUrl(product?.images[0]?.image)
+              product.images && product.images.length > 0
+                ? getImageUrl(product.images[0]?.image || "")
                 : ""
             }
             alt={product?.name}
@@ -68,7 +70,13 @@ export default function ProductCard({
               </span>
             )}
           </div>
-          <AddToCartButton product={product} />
+          <AddToCartButton product={{
+            _id: product._id,
+            name: product.name,
+            price: product.price,
+            stock: product.stock,
+            image: product.image || (product.images && product.images.length > 0 ? product.images[0].image : "")
+          }} />
         </div>
       </div>
     </article>

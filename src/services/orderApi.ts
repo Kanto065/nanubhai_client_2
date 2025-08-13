@@ -8,7 +8,9 @@ async function getCookie() {
   );
   return cookieObj?.value;
 }
-export const createOrderApi = async (data: any) => {
+import { CreateOrderData, OrderApiResponse } from "@/types/api";
+
+export const createOrderApi = async (data: CreateOrderData): Promise<OrderApiResponse> => {
   const token = await getCookie();
   try {
     const res = await fetch(`${BASE_URL}/api/order/create`, {

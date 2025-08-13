@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { googleLoginApi } from "@/services/authApi"; // adjust path
+import { googleLoginApi } from "@/services/authApi";
+import { ApiError } from "@/types/error";
 
 export async function POST(req: Request) {
   try {
@@ -21,10 +22,13 @@ export async function POST(req: Request) {
       success: true,
       user: response.user,
     });
-  } catch (err: any) {
+  } catch (err) {
+    const error = err instanceof Error ? err : new Error("Something went wrong");
+    const status = err instanceof ApiError ? err.status : 500;
+    
     return NextResponse.json(
-      { success: false, message: err.message || "Something went wrong" },
-      { status: 500 }
+      { success: false, message: error.message },
+      { status }
     );
   }
 }

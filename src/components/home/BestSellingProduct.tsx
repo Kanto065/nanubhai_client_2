@@ -2,6 +2,7 @@ import SectionHeader from "./_components/SectionHeader";
 import SectionBanner from "./_components/SectionBanner";
 import { getProducts } from "@/services/productApi";
 import ProductCard from "../products/ProductCard";
+import { Product } from "@/types/product";
 
 // Hero slider data
 const slides = [
@@ -36,8 +37,8 @@ export default async function BestSellingProduct() {
         {/* Product Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 px-2 sm:px-4">
           {products?.length > 0 &&
-            products?.map((product: any, index: number) => (
-              <ProductCard key={product?._id} product={product} index={index} />
+            products?.map((product: Product, index: number) => (
+              <ProductCard key={product._id} product={product} index={index} />
             ))}
         </div>
       </section>

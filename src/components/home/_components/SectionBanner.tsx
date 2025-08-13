@@ -19,7 +19,7 @@ export default function SectionBanner({ slides }: { slides: Slide[] }) {
     }, 5000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   return (
     <div className="relative w-full h-[200px] md:h-[300px] overflow-hidden rounded-2xl shadow-lg mx-auto mb-8 max-w-[95%]">

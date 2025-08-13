@@ -2,6 +2,7 @@
 import { logoutAction } from "@/actions/user";
 import { apiSlice } from "@/redux/features/apiSlice";
 import { userLoggedOut } from "@/redux/features/auth/authSlice";
+import { AppState } from "@/redux/store";
 import { LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -10,7 +11,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
 export default function ProfileMenu() {
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: AppState) => state.auth);
   const dispatch = useDispatch();
   const router = useRouter();
   const [showUserMenu, setShowUserMenu] = useState(false);

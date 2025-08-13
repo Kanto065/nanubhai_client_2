@@ -3,23 +3,24 @@
 import { changeCartQuantiyAction, deleteCartAction } from "@/actions/cart";
 import { getImageUrl } from "@/utils";
 import { ShoppingCart as CartIcon, Frown, Trash2 } from "lucide-react";
+import { CartItem } from "@/types/product";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function ShoppingCart({ cart }: { cart: any }) {
+export default function ShoppingCart({ cart }: { cart: CartItem[] }) {
   const router = useRouter();
   const [couponCode, setCouponCode] = useState<string>("");
 
   // Calculate total price
-  const totalPrice =
-    cart?.length > 0 &&
-    cart?.reduce(
-      (total: number, item: any) =>
-        total + item?.products[0]?.price * item?.quantity,
-      0
-    );
+  const totalPrice = cart?.length > 0
+    ? cart.reduce(
+        (total: number, item: CartItem) =>
+          total + (item.products[0]?.price || 0) * item.quantity,
+        0
+      )
+    : 0;
   const updateQuantity = async (type: "INC" | "DEC", productId: string) => {
     const result = await changeCartQuantiyAction({
       type,
@@ -56,7 +57,7 @@ export default function ShoppingCart({ cart }: { cart: any }) {
       {/* Cart Items */}
       <div className="divide-y">
         {cart?.length > 0 ? (
-          cart?.map((item: any) => (
+          cart?.map((item: CartItem) => (
             <div key={item?._id} className="p-4 flex items-start relative">
               {/* Product Image */}
               <div className="w-24 h-24 relative rounded-md overflow-hidden shrink-0">

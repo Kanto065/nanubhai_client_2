@@ -8,20 +8,14 @@ import { CircleX, PencilLine, Plus, Save } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-type ShippingAddress = {
-  _id: string;
-  street: string;
-  city: string;
-  postCode: number;
-  country: string;
-};
+import { ShippingAddress } from "@/types/order";
 
-type Props = {
+interface ShippingAddressListProps {
   onSelect: (selected: string) => void;
-  addresses: any;
-};
+  addresses: ShippingAddress[];
+}
 
-export default function ShippingAddressList({ onSelect, addresses }: Props) {
+export default function ShippingAddressList({ onSelect, addresses }: ShippingAddressListProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mode, setMode] = useState<"add" | "edit" | null>(null); // initially hidden
 
@@ -40,7 +34,7 @@ export default function ShippingAddressList({ onSelect, addresses }: Props) {
       setSelectedId(defaultAddress._id);
       onSelect(defaultAddress._id);
     }
-  }, [addresses]);
+  }, [addresses, onSelect]);
 
   const handleSelect = (address: ShippingAddress) => {
     setSelectedId(address._id);

@@ -23,8 +23,11 @@ interface UserData {
   joinDate: string;
 }
 
+import { AppState } from "@/redux/store";
+import { UserType } from "@/types/user";
+
 const UserProfile: React.FC = () => {
-  const { user } = useSelector((state: any) => state.auth);
+  const user = useSelector((state: AppState) => state.auth.user) as UserType | undefined;
   // In a real app, this would come from an API or context
   const [userData, setUserData] = useState<UserData>({
     id: 1,
@@ -38,8 +41,8 @@ const UserProfile: React.FC = () => {
       zipCode: "10001",
       country: "United States",
     },
-    profileImage: "/images/avatar-placeholder.jpg",
-    joinDate: user?.createdAt,
+    profileImage: user?.provider === "google" ? (user?.image || "") : getImageUrl(user?.image || ""),
+    joinDate: user?.createdAt?.toISOString() || new Date().toISOString(),
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -126,8 +129,8 @@ const UserProfile: React.FC = () => {
               <Image
                 src={
                   user?.provider === "google"
-                    ? user?.image
-                    : getImageUrl(user?.image)
+                    ? (user?.image || "")
+                    : getImageUrl(user?.image || "")
                 }
                 alt={formData.name}
                 width={96}

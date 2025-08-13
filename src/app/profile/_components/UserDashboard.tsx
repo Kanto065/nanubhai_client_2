@@ -2,6 +2,8 @@
 
 import { userLoggedOut } from "@/redux/features/auth/authSlice";
 import { getImageUrl } from "@/utils";
+import { AppState } from "@/redux/store";
+import { UserType } from "@/types/user";
 import {
   CreditCard,
   Heart,
@@ -33,7 +35,7 @@ type TabType =
 
 export default function UserDashboard({ orders }: { orders: Order[] }) {
   const router = useRouter();
-  const { user } = useSelector((state: any) => state.auth);
+  const user = useSelector((state: AppState) => state.auth.user) as UserType | undefined;
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState<TabType>("profile");
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
@@ -50,6 +52,7 @@ export default function UserDashboard({ orders }: { orders: Order[] }) {
   const handleOrderSelect = (orderId: string) => {
     setSelectedOrderId(orderId);
     setActiveTab("orderDetail");
+    return void 0; // To make it clear this is intentional
   };
 
   // Handle back from order detail
@@ -64,7 +67,7 @@ export default function UserDashboard({ orders }: { orders: Order[] }) {
       case "profile":
         return <UserProfile />;
       case "orders":
-        return <OrderList orders={orders} />;
+        return <OrderList orders={orders} onOrderSelect={handleOrderSelect} />;
       case "orderDetail":
         return selectedOrderId ? (
           <OrderDetail
@@ -142,10 +145,10 @@ export default function UserDashboard({ orders }: { orders: Order[] }) {
                     <Image
                       src={
                         user?.provider === "google"
-                          ? user?.image
-                          : getImageUrl(user?.image)
+                          ? user.image
+                          : getImageUrl(user?.image || "")
                       }
-                      alt={user?.email}
+                      alt={user?.email || "User"}
                       width={56}
                       height={56}
                       className="object-cover w-full h-full"

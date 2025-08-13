@@ -9,12 +9,17 @@ import OrderSummery from "./OrderSummery";
 import ShippingAddressList from "./ShippingAddressList";
 import { createOrderAction } from "@/actions/order";
 
+import { CartItem } from "@/types/product";
+import { ShippingAddress } from "@/types/order";
+import { AppState } from "@/redux/store";
+import { UserType } from "@/types/user";
+
 export default function CheckoutForm({
   carts,
   addresses,
 }: {
-  carts: any;
-  addresses: any;
+  carts: CartItem[];
+  addresses: ShippingAddress[];
 }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>("info"); // 'info' or 'payment'
@@ -22,7 +27,7 @@ export default function CheckoutForm({
     "cod" | "nagad" | "bkash" | "card"
   >("cod");
   const [shippingAddressId, setShippingAddressId] = useState<string>("");
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: AppState) => state.auth);
   const [serverError, setServerError] = useState("");
 
   // Form state
@@ -33,13 +38,13 @@ export default function CheckoutForm({
   });
 
   // Calculate totals
-  const subtotal =
-    carts?.length > 0 &&
-    carts?.reduce(
-      (total: number, item: any) =>
-        total + item?.products[0]?.price * item?.quantity,
-      0
-    );
+  const subtotal = carts?.length > 0 
+    ? carts.reduce(
+        (total: number, item: CartItem) =>
+          total + item.products[0].price * item.quantity,
+        0
+      )
+    : 0;
   const shipping = 60; // Fixed shipping cost
   const discount = 0;
   const total = subtotal + shipping - discount;
@@ -89,11 +94,12 @@ export default function CheckoutForm({
 
   useEffect(() => {
     if (user) {
+      const typedUser = user as UserType;
       setFormData((prev) => ({
         ...prev,
-        name: user?.name,
-        email: user?.email,
-        phone: user?.phone || "",
+        name: typedUser.name,
+        email: typedUser.email,
+        phone: typedUser.phone || "",
       }));
     }
   }, [user]);

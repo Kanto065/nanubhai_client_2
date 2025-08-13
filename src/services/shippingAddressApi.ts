@@ -1,4 +1,6 @@
 import { cookies } from "next/headers";
+import { ShippingAddressApiResponse } from "@/types/api";
+import { ShippingAddress } from "@/types/order";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -9,7 +11,7 @@ async function getCookie() {
   return cookieObj?.value;
 }
 
-export const getAllShippingAddressApi = async () => {
+export const getAllShippingAddressApi = async (): Promise<ShippingAddressApiResponse> => {
   const token = await getCookie();
   try {
     const res = await fetch(`${BASE_URL}/api/shipping-address/all`, {
@@ -37,7 +39,7 @@ export const getAllShippingAddressApi = async () => {
   }
 };
 
-export async function createShippingAddressApi(data: any) {
+export async function createShippingAddressApi(data: Omit<ShippingAddress, "_id" | "userId" | "createdAt" | "updatedAt">) {
   const token = await getCookie();
 
   try {
@@ -63,7 +65,13 @@ export async function createShippingAddressApi(data: any) {
     throw new Error("Something went wrong");
   }
 }
-export async function updateShippingAddressApi(id: string, data: any) {
+
+export async function updateShippingAddressApi(id: string, data: {
+  street: string;
+  city: string;
+  postCode: number;
+  country: string;
+}) {
   const token = await getCookie();
 
   try {

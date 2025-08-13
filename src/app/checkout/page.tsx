@@ -3,15 +3,20 @@ import { ArrowLeft } from "lucide-react";
 import CheckoutForm from "./_components/CheckoutForm";
 import { getAllCartApi } from "@/services/cartApi";
 import { getAllShippingAddressApi } from "@/services/shippingAddressApi";
+import { ShippingAddress } from "@/types/order";
 
 export default async function CheckoutPage() {
   let cartItems = [];
-  let shippingAddress = [];
+  let shippingAddress: Array<ShippingAddress> = [];
   try {
     const cartResult = await getAllCartApi();
     const shippingAddressResult = await getAllShippingAddressApi();
     cartItems = cartResult?.cart;
-    shippingAddress = shippingAddressResult?.addresses;
+    shippingAddress = shippingAddressResult?.shippingAddresses.map(addr => ({
+      ...addr,
+      createdAt: new Date(addr.createdAt),
+      updatedAt: new Date(addr.updatedAt)
+    }));
   } catch (error) {
     // Log or ignore unauthorized error, but don't block rendering
     console.error("Fetch failed:", error);

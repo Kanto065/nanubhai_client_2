@@ -19,6 +19,7 @@ import { userLoggedOut } from "@/redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { apiSlice } from "@/redux/features/apiSlice";
 import { logoutAction } from "@/actions/user";
+import { AppState } from "@/redux/store";
 
 interface NavItem {
   name: string;
@@ -37,7 +38,7 @@ const SideNavbar: React.FC<SideNavbarProps> = ({ isOpen, onClose }) => {
   const router = useRouter();
   const sidebarRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: AppState) => state.auth);
   // Close sidebar when clicking outside or pressing Escape key
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

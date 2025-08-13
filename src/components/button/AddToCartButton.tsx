@@ -5,7 +5,9 @@ import { Minus, Plus } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
-export default function AddToCartButton({ product }: { product: any }) {
+import { AddToCartProduct } from "@/types/cart";
+
+export default function AddToCartButton({ product }: { product: AddToCartProduct }) {
   const [showQuantityControls, setShowQuantityControls] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const controlsRef = useRef<HTMLDivElement>(null);

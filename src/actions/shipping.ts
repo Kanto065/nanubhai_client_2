@@ -5,16 +5,17 @@ import {
   updateShippingAddressApi,
 } from "@/services/shippingAddressApi";
 import { revalidateTag } from "next/cache";
+import { ShippingAddressSchemaType, shippingAddressSchema } from "@/validation/shipping.dto";
 
-export async function createShippingAddressAction(data: any) {
+export async function createShippingAddressAction(data: ShippingAddressSchemaType) {
   try {
-    //    const parsed = addToCartSchema.safeParse(data);
-    //    if (!parsed.success) {
-    //      return {
-    //        success: false,
-    //        fieldErrors: parsed.error.flatten().fieldErrors,
-    //      };
-    //    }
+    const parsed = shippingAddressSchema.safeParse(data);
+    if (!parsed.success) {
+      return {
+        success: false,
+        fieldErrors: parsed.error.flatten().fieldErrors,
+      };
+    }
 
     const response = await createShippingAddressApi(data);
     revalidateTag("ShippingAddress"); // Refresh tagged fetch
@@ -34,15 +35,15 @@ export async function createShippingAddressAction(data: any) {
     };
   }
 }
-export async function updateShippingAddressAction(id: string, data: any) {
+export async function updateShippingAddressAction(id: string, data: ShippingAddressSchemaType) {
   try {
-    //    const parsed = addToCartSchema.safeParse(data);
-    //    if (!parsed.success) {
-    //      return {
-    //        success: false,
-    //        fieldErrors: parsed.error.flatten().fieldErrors,
-    //      };
-    //    }
+    const parsed = shippingAddressSchema.safeParse(data);
+    if (!parsed.success) {
+      return {
+        success: false,
+        fieldErrors: parsed.error.flatten().fieldErrors,
+      };
+    }
 
     const response = await updateShippingAddressApi(id, data);
     revalidateTag("ShippingAddress"); // Refresh tagged fetch
