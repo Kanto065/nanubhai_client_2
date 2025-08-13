@@ -1,9 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // eslint: {
-  //   ignoreDuringBuilds: true,
-  // },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  output: 'standalone',
   transpilePackages: [],
   experimental: {
     serverActions: {
@@ -37,6 +38,10 @@ const nextConfig: NextConfig = {
   },
   webpack: (config) => {
     config.resolve.fallback = { fs: false, path: false };
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': `${__dirname}/src`,
+    };
     return config;
   },
 };
